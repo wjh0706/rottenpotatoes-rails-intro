@@ -20,14 +20,16 @@ class MoviesController < ApplicationController
       session[:ratings] = Movie.all_ratings
       @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
       redirect_to movies_path(:ratings => Hash[@ratings_to_show])
-    elsif !session[:ratings].nil? #!params[:ratings].nil?
-      @movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
-      @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
-      redirect_to movies_path(:ratings =>@ratings_to_show , :order_by =>session[:order_by])#Hash[session[:ratings].collect{|i|[i, "1"]}]
-    else
+    elsif !params[:ratings].nil? #!session[:ratings].nil?
       @ratings_to_show = params[:ratings]
       session[:ratings] = @ratings_to_show.keys
       @movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
+    else
+
+      @movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
+      @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
+      redirect_to movies_path(:ratings =>@ratings_to_show , :order_by =>session[:order_by])#Hash[session[:ratings].collect{|i|[i, "1"]}]
+
     end
 
     if params[:order_by] == 'release_date'
