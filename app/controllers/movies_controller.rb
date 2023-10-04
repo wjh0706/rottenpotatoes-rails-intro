@@ -21,7 +21,7 @@ class MoviesController < ApplicationController
       @ratings_to_show = Hash[@all_ratings.collect{|i|[i, "1"]}]
     elsif !params[:ratings].nil?
       @ratings_to_show = params[:ratings]
-      session[:ratings] = @ratings_to_show.keys
+      session[:ratings] = @ratings_to_show#.keys
       @movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
     else
       @movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
