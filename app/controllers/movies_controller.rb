@@ -9,13 +9,18 @@ class MoviesController < ApplicationController
   def index
     
     @all_ratings = Movie.all_ratings
-    session[:order_by] = params[:order_by] || session[:order_by]
+    if params[:order_by].nil?
+      session[:order_by] = session[:order_by]
+    elsif session[:order_by].nil?
+      session[:order_by] = params[:order_by]
+    end
+
+    #session[:order_by] = params[:order_by] || session[:order_by]
     @ratings_to_show = []
     if params[:ratings].nil? && session[:ratings].nil?
     	@movies = Movie.all.order(params[:order_by])
       session[:ratings] = Movie.all_ratings
       @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
-      #redirect_to movies_path()
       redirect_to movies_path(:ratings => Hash[@ratings_to_show])
     elsif !params[:ratings].nil?
       @ratings_to_show = params[:ratings]
