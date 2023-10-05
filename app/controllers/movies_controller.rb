@@ -32,12 +32,14 @@ class MoviesController < ApplicationController
     else
       #@movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
       @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
-      redirect_to movies_path(ratings: @ratings_to_show , order_by: session[:order_by])
+      #redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
     end
-    @movies = Movie.with_ratings(@ratings_to_show)
+    @movies = Movie.with_ratings(@ratings_to_show.keys)
     if session[:order_by]
       @movies = @movies.order(session[:order_by])
+      redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
     end
+    
     #@movies = Movie.with_ratings(session[:ratings]).order(session[:order_by])
     if params[:order_by] == 'release_date'
       @release_date_style = 'bg-warning hilite'
