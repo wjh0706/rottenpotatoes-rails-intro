@@ -32,7 +32,7 @@ class MoviesController < ApplicationController
     else
       #@movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
       #@ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
-      redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
+      redirect_to movies_path(ratings: Hash[session[:ratings].collect{|i|[i, "1"]}], order_by: session[:order_by])
     end
     @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
     @movies = Movie.with_ratings(@ratings_to_show.keys)
