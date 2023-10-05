@@ -9,9 +9,9 @@ class MoviesController < ApplicationController
   def index
     
     @all_ratings = Movie.all_ratings
-    if params[:order_by].nil?
-      session[:order_by] = session[:order_by]
-    elsif session[:order_by].nil?
+    #if params[:order_by].nil?
+      #session[:order_by] = session[:order_by]
+    if session[:order_by].nil?
       session[:order_by] = params[:order_by]
     end
     @ratings_to_show = []
