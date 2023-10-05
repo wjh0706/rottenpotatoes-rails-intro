@@ -9,39 +9,27 @@ class MoviesController < ApplicationController
   def index
     
     @all_ratings = Movie.all_ratings
-    #if params[:order_by].nil?
-      #session[:order_by] = session[:order_by]
+
     if session[:order_by].nil?
       session[:order_by] = params[:order_by]
     end
 
-    #if session[:ratings].nil?
-      #session[:ratings] = params[:ratings] || @all_ratings
-    #end
-
-
     @ratings_to_show = []
     if params[:ratings].nil? && session[:ratings].nil?
-    	#@movies = Movie.all.order(params[:order_by])
       session[:ratings] = @all_ratings
-      #@ratings_to_show = Hash[@all_ratings.collect{|i|[i, "1"]}]
     elsif !params[:ratings].nil?
-      #@ratings_to_show = params[:ratings]
       session[:ratings] = params[:ratings].keys
-      #@movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
     else
-      #@movies = Movie.with_ratings(session[:ratings]).order(params[:order_by])
-      #@ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
       redirect_to movies_path(ratings: Hash[session[:ratings].collect{|i|[i, "1"]}], order_by: session[:order_by])
     end
+
     @ratings_to_show = Hash[session[:ratings].collect{|i|[i, "1"]}]
+
     @movies = Movie.with_ratings(@ratings_to_show.keys)
     if session[:order_by]
       @movies = @movies.order(session[:order_by])
-      #redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
     end
     
-    #@movies = Movie.with_ratings(session[:ratings]).order(session[:order_by])
     if params[:order_by] == 'release_date'
       @release_date_style = 'bg-warning hilite'
     elsif params[:order_by] == 'title'
