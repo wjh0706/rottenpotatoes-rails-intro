@@ -35,7 +35,7 @@ class MoviesController < ApplicationController
       #redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
     end
     @movies = Movie.with_ratings(@ratings_to_show.keys)
-    if session[:order_by]
+    if !session[:order_by].nil?
       @movies = @movies.order(session[:order_by])
       redirect_to movies_path(ratings: @ratings_to_show, order_by: session[:order_by])
     end
